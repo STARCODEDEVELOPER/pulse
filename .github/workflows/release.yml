@@ -1,0 +1,54 @@
+name: Release Pulse
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  windows-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build installer
+        run: npm run dist
+
+      - name: Create update manifest
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run release:manifest
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/Pulse-Setup-*.exe
+
+      - name: Publish latest.json to main
+        shell: bash
+        run: |
+          git fetch origin main:refs/remotes/origin/main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp latest.json "$RUNNER_TEMP/latest.json"
+          git checkout main
+          cp "$RUNNER_TEMP/latest.json" latest.json
+          git add latest.json
+          git diff --cached --quiet || git commit -m "chore: update release manifest"
+          git push origin main
