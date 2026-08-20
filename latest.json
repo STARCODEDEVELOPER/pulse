@@ -1,0 +1,12 @@
+{
+  "product": "Pulse",
+  "version": "1.0.1",
+  "releasedAt": "2026-08-20T11:44:55.876Z",
+  "notes": "Pulse 1.0.1",
+  "windows": {
+    "url": "https://github.com/STARCODEDEVELOPER/pulse/releases/download/v1.0.1/Pulse-Setup-1.0.1.exe",
+    "sha256": "dd1c4b253b36a687b431611ff2ccd6d715929e0d3d45440af1c0b5c6b1777c8a",
+    "size": 78379056,
+    "filename": "Pulse-Setup-1.0.1.exe"
+  }
+}
