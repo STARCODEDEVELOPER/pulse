@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis",
+    "dist": "electron-builder --win nsis --publish never",
     "release:manifest": "node scripts/create-manifest.js",
     "release:publish": "node scripts/publish-release.js"
   },
